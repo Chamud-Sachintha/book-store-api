@@ -27,7 +27,7 @@ class AppHelper {
     }
 
     public function generateAuthToken($user) {
-        $authCode = "CA Software Engineering" . $user . $this->day_time();
+        $authCode = "CS Software Engineering" . $user . $this->day_time();
         return Hash::make($authCode);
     }
 

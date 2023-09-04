@@ -69,4 +69,10 @@ class User extends Authenticatable
 
         return $this->where($uid)->update($map);
     }
+
+    public function query_find_by_token($token) {
+        $map['token'] = $token;
+
+        return $this->where($map)->first();
+    }
 }

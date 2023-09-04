@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BookController;
 use App\Http\Controllers\ClientContoller;
 
 /*
@@ -23,3 +24,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::post('register', [AuthController::class, 'registerNewUser']);
 
 Route::post('login', [AuthController::class, 'loginUser']);
+
+Route::middleware('authToken')->get('/book-list', [BookController::class, 'getBookList']);

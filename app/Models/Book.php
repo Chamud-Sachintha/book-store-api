@@ -8,4 +8,22 @@ use Illuminate\Database\Eloquent\Model;
 class Book extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'bookName',
+        'bookCover',
+        'bookCategoryId',
+        'bookDescription',
+        'year',
+        'authorName',
+        'tags',
+        'rating',
+        'status',
+        'create_time'
+    ];
+
+    public function query_log() {
+        $map['status'] = 1;
+        return $this->where($map)->get(['book_name', 'book_cover', 'book_category_id' ,'year', 'rating']);
+    }
 }
