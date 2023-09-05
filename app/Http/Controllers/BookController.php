@@ -34,5 +34,32 @@ class BookController extends Controller
         } catch (\Exception $e) {
             $this->AppHelper->responseMessageHandle(0, $e->getMessage());
         }
-    }   
+    }
+
+    public function getBookDetailsById(Request $request) {
+
+        $bookId = (is_null($request->bookId) || empty($request->bookId)) ? "" : $request->bookId;
+        $resp = $this->Book->query_find($bookId);
+
+        if ($bookId == "") {
+            return $this->AppHelper->responseMessageHandle(0, "Book Id is Required");
+        } if (empty($resp)) {
+            return $this->AppHelper->responseMessageHandle(0, "Invalid Book Id.");
+        } else {
+            try {
+
+                $bookDetails = array();
+                $bookDetails['bookName'] = $resp['book_name'];
+                $bookDetails['bookCover'] = $resp['book_cover'];
+                $bookDetails['authorName'] = $resp['author_name'];
+                $bookDetails['bookDescription'] = $resp['book_description'];
+                $bookDetails['categoryId'] = $resp['book_category_id'];
+                $bookDetails['rating'] = $resp['rating'];
+
+                return $this->AppHelper->responseEntityHandle(1, "Operation Successfully.", $bookDetails);
+            } catch (\Exception $e) {
+                return $this->AppHelper->responseMessageHandle(0, $e->getMessage());
+            }
+        }
+    }
 }

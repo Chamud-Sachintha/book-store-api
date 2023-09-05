@@ -26,4 +26,11 @@ class Book extends Model
         $map['status'] = 1;
         return $this->where($map)->get(['book_name', 'book_cover', 'book_category_id' ,'year', 'rating']);
     }
+
+    public function query_find($bookId) {
+        $map['id'] = $bookId;
+        $map['status'] = 1;
+
+        return $this->where($map)->first();
+    }
 }
