@@ -75,4 +75,11 @@ class User extends Authenticatable
 
         return $this->where($map)->first();
     }
+
+    public function query_log($email) {
+        // $map['status'] = 1;
+        $map['email'] = $email;
+
+        return $this->where($map)->first();
+    }
 }

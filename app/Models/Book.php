@@ -11,9 +11,11 @@ class Book extends Model
 
     protected $fillable = [
         'bookName',
+        'pdfPath',
         'bookCover',
         'bookCategoryId',
         'bookDescription',
+        'bookPrice',
         'year',
         'authorName',
         'tags',
@@ -24,7 +26,7 @@ class Book extends Model
 
     public function query_log() {
         $map['status'] = 1;
-        return $this->where($map)->get(['book_name', 'book_cover', 'book_category_id' ,'year', 'rating']);
+        return $this->where($map)->get(['book_name', 'book_cover', 'book_price', 'book_category_id' ,'year', 'rating']);
     }
 
     public function query_find($bookId) {

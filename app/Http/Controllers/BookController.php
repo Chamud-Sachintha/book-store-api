@@ -26,6 +26,7 @@ class BookController extends Controller
                 $bookList['bookName'] = $value['book_name'];
                 $bookList['bookCover'] = $value['book_cover'];
                 $bookList['bookCategoryId'] = $value['book_category_id'];
+                $bookList['bookPrice'] = $value['book_price'];
                 $bookList['year'] = $value['year'];
                 $bookList['rating'] = $value['rating'];
             }
@@ -53,6 +54,7 @@ class BookController extends Controller
                 $bookDetails['bookCover'] = $resp['book_cover'];
                 $bookDetails['authorName'] = $resp['author_name'];
                 $bookDetails['bookDescription'] = $resp['book_description'];
+                $bookDetails['bookPrice'] = $resp['book_price'];
                 $bookDetails['categoryId'] = $resp['book_category_id'];
                 $bookDetails['rating'] = $resp['rating'];
 
