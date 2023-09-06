@@ -34,6 +34,10 @@ class AppHelper {
     public function day_time() {
         return strtotime(date("Ymd"));
     }
+
+    public function get_date_and_time() {
+        return strtotime("now");
+    }
 }
 
 ?>

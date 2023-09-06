@@ -88,4 +88,10 @@ class User extends Authenticatable
 
         return $this->where($map)->update($user);
     }
+
+    public function find_by_id($clientId) {
+        $map['id'] = $clientId;
+
+        return $this->where($map)->first();
+    }
 }
