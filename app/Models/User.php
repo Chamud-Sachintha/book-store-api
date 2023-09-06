@@ -82,4 +82,10 @@ class User extends Authenticatable
 
         return $this->where($map)->first();
     }
+
+    public function update_user($user) {
+        $map['email'] = $user['email'];
+
+        return $this->where($map)->update($user);
+    }
 }

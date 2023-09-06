@@ -30,3 +30,5 @@ Route::middleware('authToken')->get('/book-list', [BookController::class, 'getBo
 Route::middleware('authToken')->get('/book', [BookController::class, 'getBookDetailsById']);
 
 Route::middleware('authToken')->get('/profile', [ClientContoller::class, 'getProfileInformations']);
+
+Route::middleware('authToken')->post('/update-profile', [ClientContoller::class, 'updateProfileInformations']);
