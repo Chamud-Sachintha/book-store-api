@@ -148,15 +148,18 @@ class BookController extends Controller
                 } else {
                     $bookMarkDetails = array();
 
-                    $bookDetails['clientId'] = $client_id;
-                    $bookDetails['bookId'] = $book_id;
+                    $bookMarkDetails['clientId'] = $client_id;
+                    $bookMarkDetails['bookId'] = $book_id;
 
                     $resp = $this->BookMark->query_log($bookMarkDetails);
 
-                    $bookMarkList = array();
                     if ($resp) {
-                        $bookMarkList['pageNumber'] = $resp['page_number'];
-                        $bookMarkList['pageDescription'] = $resp['page_description'];
+
+                        $bookMarkList = array();                        
+                        foreach($resp as $key => $value) {
+                            $bookMarkList['pageNumber'] = $value['page_number'];
+                            $bookMarkList['pageDescription'] = $value['page_description'];
+                        }
 
                         return $this->AppHelper->responseEntityHandle(1, "Operation Complete", $bookMarkList);
                     } else {

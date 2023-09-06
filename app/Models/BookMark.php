@@ -10,10 +10,10 @@ class BookMark extends Model
     use HasFactory;
 
     protected $fillable = [
-        'clientId',
-        'bookId',
-        'pageNumber',
-        'pageDescription',
+        'client_id',
+        'book_id',
+        'page_number',
+        'page_description',
         'time'
     ];
 
@@ -23,7 +23,7 @@ class BookMark extends Model
         $map['page_number'] = $bookmarkDetails['pageNumber'];
         $map['page_description'] = $bookmarkDetails['pageDescription'];
         $map['time'] = $bookmarkDetails['time'];
-        // dd($map); die;
+
         return $this->create($map);
     }
 

@@ -15,6 +15,12 @@ class CreateClientReviewsTable extends Migration
     {
         Schema::create('client_reviews', function (Blueprint $table) {
             $table->id();
+            $table->string('client_id');
+            $table->string('book_id');
+            $table->integer('rating');
+            $table->string('feedback');
+            $table->integer('time');
+            
             $table->timestamps();
         });
     }

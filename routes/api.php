@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\ClientContoller;
+use App\Http\Controllers\FeedbackController;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,3 +35,7 @@ Route::middleware('authToken')->get('/profile', [ClientContoller::class, 'getPro
 Route::middleware('authToken')->post('/update-profile', [ClientContoller::class, 'updateProfileInformations']);
 
 Route::middleware('authToken')->post('/add-bookmark', [BookController::class, 'createBookMark']);
+
+Route::middleware('authToken')->get('/bookmark-list', [BookController::class, 'getBookMarkListByUser']);
+
+Route::middleware('authToken')->post('/create-feedback', [FeedbackController::class, 'addNewClientReview']);
