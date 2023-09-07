@@ -15,6 +15,11 @@ class CreateCartItemsTable extends Migration
     {
         Schema::create('cart_items', function (Blueprint $table) {
             $table->id();
+            $table->string('cart_id');
+            $table->string('book_id');
+            $table->integer('quantity');
+            $table->integer('time');
+            
             $table->timestamps();
         });
     }
