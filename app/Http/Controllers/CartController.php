@@ -8,6 +8,7 @@ use App\Models\Cart;
 use App\Models\CartItems;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class CartController extends Controller
 {
@@ -58,7 +59,7 @@ class CartController extends Controller
                         $cartItemsInfo = array();
 
                         $cartItemsInfo['cartId'] = $clientCartId;
-                        $cartItemsInfo['book_id'] = $bookId;
+                        $cartItemsInfo['bookId'] = $bookId;
                         $cartItemsInfo['quantity'] = $quantity;
                         $cartItemsInfo['time'] = $this->AppHelper->get_date_and_time();
 
@@ -94,7 +95,27 @@ class CartController extends Controller
             return $this->AppHelper->responseMessageHandle(0, "Client is is required.");
         } else {
             try {
+                $getCartofUser = $this->Cart->verify_cart($clientId);
 
+                if ($getCartofUser) {
+                    $resp = DB::table('cart_items')->select('cart_items.quantity', 'books.id as bookId', 'books.book_name', 'books.book_cover', 'books.book_category_id', 'books.book_price', 'books.author_name', 'books.rating')
+                                ->join('books', 'cart_items.book_id', '=', 'books.id')
+                                ->join('carts', 'carts.client_id', '=', 'cart_items.cart_id')
+                                ->join('users', 'users.id', 'carts.client_id')
+                                ->get();
+
+                    $cartItemsList = array();
+                    foreach ($resp as $key => $value) {
+                        $cartItemsList[$key]['bookId'] = $value->bookId;
+                        $cartItemsList[$key]['bookName'] = $value->book_name;
+                        $cartItemsList[$key]['authorName'] = $value->author_name;
+                        $cartItemsList[$key]['rating'] = $value->rating;
+                        $cartItemsList[$key]['price'] = $value->book_price;
+                        $cartItemsList[$key]['book_cover'] = $value->book_cover;
+                    }
+
+                    return $this->AppHelper->responseEntityHandle(1, "Operating Complete", $cartItemsList);
+                }
             } catch (\Exception $e) {
                 return $this->AppHelper->responseMessageHandle(0, $e->getMessage());
             }

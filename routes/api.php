@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BookController;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\ClientContoller;
 use App\Http\Controllers\FeedbackController;
 
@@ -39,3 +40,7 @@ Route::middleware('authToken')->post('/add-bookmark', [BookController::class, 'c
 Route::middleware('authToken')->get('/bookmark-list', [BookController::class, 'getBookMarkListByUser']);
 
 Route::middleware('authToken')->post('/create-feedback', [FeedbackController::class, 'addNewClientReview']);
+
+Route::middleware('authToken')->post('/addToCart', [CartController::class, 'addItemsToCart']);
+
+Route::middleware('authToken')->get('/allCartItems', [CartController::class, 'getAllCartItems']);
