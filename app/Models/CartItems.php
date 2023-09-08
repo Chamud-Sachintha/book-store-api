@@ -24,4 +24,10 @@ class CartItems extends Model
 
         return $this->create($map);
     }
+
+    public function remove_cart_items_by_id($cartId) {
+        $map['cart_id'] = $cartId;
+
+        return $this->where($map)->delete();
+    }
 }

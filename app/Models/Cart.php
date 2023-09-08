@@ -26,4 +26,10 @@ class Cart extends Model
 
         return $this->where($map)->first();
     }
+
+    public function remove_cart_for_user($clientId) {
+        $map['client_id'] = $clientId;
+
+        return $this->where($map)->delete();
+    }
 }

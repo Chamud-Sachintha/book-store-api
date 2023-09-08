@@ -102,6 +102,7 @@ class CartController extends Controller
                                 ->join('books', 'cart_items.book_id', '=', 'books.id')
                                 ->join('carts', 'carts.client_id', '=', 'cart_items.cart_id')
                                 ->join('users', 'users.id', 'carts.client_id')
+                                ->where('users.id', '=', $clientId)
                                 ->get();
 
                     $cartItemsList = array();

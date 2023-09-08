@@ -7,6 +7,7 @@ use App\Http\Controllers\BookController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\ClientContoller;
 use App\Http\Controllers\FeedbackController;
+use App\Http\Controllers\OrderController;
 
 /*
 |--------------------------------------------------------------------------
@@ -44,3 +45,5 @@ Route::middleware('authToken')->post('/create-feedback', [FeedbackController::cl
 Route::middleware('authToken')->post('/addToCart', [CartController::class, 'addItemsToCart']);
 
 Route::middleware('authToken')->get('/allCartItems', [CartController::class, 'getAllCartItems']);
+
+Route::middleware('authToken')->post('/placeOrder', [OrderController::class, 'placeNewOrder']);
