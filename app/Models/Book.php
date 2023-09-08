@@ -26,7 +26,7 @@ class Book extends Model
 
     public function query_log() {
         $map['status'] = 1;
-        return $this->where($map)->get(['book_name', 'book_cover', 'book_price', 'book_category_id' ,'year', 'rating']);
+        return $this->where($map)->get(['id as bookId', 'book_name', 'book_cover', 'author_name', 'book_price', 'book_category_id' ,'year', 'rating']);
     }
 
     public function query_find($bookId) {

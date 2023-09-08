@@ -24,31 +24,43 @@ class BookController extends Controller
     }
 
     public function getBookList(Request $request) {
-        try {
-            $bookDetails = $this->Book->query_log();
 
-            $bookList = array();
-            foreach ($bookDetails as $key => $value) {
-                $bookList['bookName'] = $value['book_name'];
-                $bookList['bookCover'] = $value['book_cover'];
-                $bookList['bookCategoryId'] = $value['book_category_id'];
-                $bookList['bookPrice'] = $value['book_price'];
-                $bookList['year'] = $value['year'];
-                $bookList['rating'] = $value['rating'];
+        $request_token = (is_null($request->token) || empty($request->token)) ? "" : $request->token;
+
+        if ($request_token == "") {
+            return $this->AppHelper->responseMessageHandle(0, "Token  is required.");
+        } else {
+            try {
+                $bookDetails = $this->Book->query_log();
+    
+                $bookList = array();
+                foreach ($bookDetails as $key => $value) {
+                    $bookList[$key]['bookId'] = $value['bookId'];
+                    $bookList[$key]['bookName'] = $value['book_name'];
+                    $bookList[$key]['bookCover'] = $value['book_cover'];
+                    $bookList[$key]['bookCategoryId'] = $value['book_category_id'];
+                    $bookList[$key]['authorName'] = $value['author_name'];
+                    $bookList[$key]['bookPrice'] = $value['book_price'];
+                    $bookList[$key]['year'] = $value['year'];
+                    $bookList[$key]['rating'] = $value['rating'];
+                }
+    
+                return $this->AppHelper->responseEntityHandle(1, "Book List Successfully.", $bookList);
+            } catch (\Exception $e) {
+                $this->AppHelper->responseMessageHandle(0, $e->getMessage());
             }
-
-            return $this->AppHelper->responseEntityHandle(1, "Book List Successfully.", $bookDetails);
-        } catch (\Exception $e) {
-            $this->AppHelper->responseMessageHandle(0, $e->getMessage());
         }
     }
 
     public function getBookDetailsById(Request $request) {
 
+        $request_token = (is_null($request->token) || empty($request->token)) ? "" : $request->token;
         $bookId = (is_null($request->bookId) || empty($request->bookId)) ? "" : $request->bookId;
         $resp = $this->Book->query_find($bookId);
 
-        if ($bookId == "") {
+        if ($request_token == "") {
+            return $this->AppHelper->responseMessageHandle(0, "Token is required.");
+        } if ($bookId == "") {
             return $this->AppHelper->responseMessageHandle(0, "Book Id is Required");
         } if (empty($resp)) {
             return $this->AppHelper->responseMessageHandle(0, "Invalid Book Id.");

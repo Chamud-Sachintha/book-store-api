@@ -28,9 +28,9 @@ Route::post('register', [AuthController::class, 'registerNewUser']);
 
 Route::post('login', [AuthController::class, 'loginUser']);
 
-Route::middleware('authToken')->get('/book-list', [BookController::class, 'getBookList']);
+Route::middleware('authToken')->post('/book-list', [BookController::class, 'getBookList']);
 
-Route::middleware('authToken')->get('/book', [BookController::class, 'getBookDetailsById']);
+Route::middleware('authToken')->post('/book', [BookController::class, 'getBookDetailsById']);
 
 Route::middleware('authToken')->get('/profile', [ClientContoller::class, 'getProfileInformations']);
 
