@@ -98,24 +98,55 @@ class CartController extends Controller
                 $getCartofUser = $this->Cart->verify_cart($clientId);
 
                 if ($getCartofUser) {
-                    $resp = DB::table('cart_items')->select('cart_items.quantity', 'books.id as bookId', 'books.book_name', 'books.book_cover', 'books.book_category_id', 'books.book_price', 'books.author_name', 'books.rating')
+                    $resp = DB::table('cart_items')->select('carts.id as cartId', 'cart_items.quantity', 'books.id as bookId', 'books.book_name', 'books.book_cover', 'books.book_category_id', 'books.book_price', 'books.author_name', 'books.rating')
                                 ->join('books', 'cart_items.book_id', '=', 'books.id')
-                                ->join('carts', 'carts.client_id', '=', 'cart_items.cart_id')
+                                ->join('carts', 'carts.id', '=', 'cart_items.cart_id')
                                 ->join('users', 'users.id', 'carts.client_id')
                                 ->where('users.id', '=', $clientId)
                                 ->get();
 
                     $cartItemsList = array();
                     foreach ($resp as $key => $value) {
-                        $cartItemsList[$key]['bookId'] = $value->bookId;
-                        $cartItemsList[$key]['bookName'] = $value->book_name;
-                        $cartItemsList[$key]['authorName'] = $value->author_name;
-                        $cartItemsList[$key]['rating'] = $value->rating;
-                        $cartItemsList[$key]['price'] = $value->book_price;
-                        $cartItemsList[$key]['book_cover'] = $value->book_cover;
+                        $cartItemsList['body'][$key]['bookId'] = $value->bookId;
+                        $cartItemsList['body'][$key]['bookName'] = $value->book_name;
+                        $cartItemsList['body'][$key]['authorName'] = $value->author_name;
+                        $cartItemsList['body'][$key]['rating'] = $value->rating;
+                        $cartItemsList['body'][$key]['bookPrice'] = $value->book_price;
+                        $cartItemsList['body'][$key]['book_cover'] = $value->book_cover;
                     }
 
+                    $cartItemsList['cartId'] = $resp[0]->cartId;
+
                     return $this->AppHelper->responseEntityHandle(1, "Operating Complete", $cartItemsList);
+                }
+            } catch (\Exception $e) {
+                return $this->AppHelper->responseMessageHandle(0, $e->getMessage());
+            }
+        }
+    }
+
+    public function removeCartItemById(Request $request) {
+
+        $request_token = (is_null($request->token) || empty($request->token)) ? "" : $request->token;
+        $cartId = (is_null($request->cartId) || empty($request->cartId)) ? "" : $request->cartId;
+        $bookId = (is_null($request->bookId) || empty($request->bookId)) ? "" : $request->bookId;
+
+        if ($request_token == "") {
+            return $this->AppHelper->responseMessageHandle(0, "Token is required.");
+        } else if ($cartId == "") {
+            return $this->AppHelper->responseMessageHandle(0, "Cart is is required.");
+        } else if ($bookId == "") {
+            return $this->AppHelper->responseMessageHandle(0, "Book id is required.");
+        } else {
+            try {   
+                $itemInfo = array();
+                $itemInfo['cartId'] = $cartId;
+                $itemInfo['bookId'] = $bookId;
+
+                $resp = $this->CartItems->remove_cart_item_by_id($itemInfo);
+
+                if ($resp) {
+                    return $this->AppHelper->responseMessageHandle(1, "Operation Complete");
                 }
             } catch (\Exception $e) {
                 return $this->AppHelper->responseMessageHandle(0, $e->getMessage());

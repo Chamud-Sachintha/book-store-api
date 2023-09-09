@@ -44,6 +44,8 @@ Route::middleware('authToken')->post('/create-feedback', [FeedbackController::cl
 
 Route::middleware('authToken')->post('/addToCart', [CartController::class, 'addItemsToCart']);
 
-Route::middleware('authToken')->get('/allCartItems', [CartController::class, 'getAllCartItems']);
+Route::middleware('authToken')->post('/removeItmeFromCart', [CartController::class, 'removeCartItemById']);
+
+Route::middleware('authToken')->post('/allCartItems', [CartController::class, 'getAllCartItems']);
 
 Route::middleware('authToken')->post('/placeOrder', [OrderController::class, 'placeNewOrder']);
