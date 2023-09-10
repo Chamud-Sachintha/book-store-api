@@ -6,6 +6,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\ClientContoller;
+use App\Http\Controllers\ClientSupportMessageController;
 use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\OrderController;
 
@@ -32,7 +33,7 @@ Route::middleware('authToken')->post('/book-list', [BookController::class, 'getB
 
 Route::middleware('authToken')->post('/book', [BookController::class, 'getBookDetailsById']);
 
-Route::middleware('authToken')->get('/profile', [ClientContoller::class, 'getProfileInformations']);
+Route::middleware('authToken')->post('/profile', [ClientContoller::class, 'getProfileInformations']);
 
 Route::middleware('authToken')->post('/update-profile', [ClientContoller::class, 'updateProfileInformations']);
 
@@ -41,6 +42,8 @@ Route::middleware('authToken')->post('/add-bookmark', [BookController::class, 'c
 Route::middleware('authToken')->get('/bookmark-list', [BookController::class, 'getBookMarkListByUser']);
 
 Route::middleware('authToken')->post('/create-feedback', [FeedbackController::class, 'addNewClientReview']);
+
+Route::middleware('authToken')->post('/addClientSupportMessage', [ClientSupportMessageController::class, 'createSupportMessage']);
 
 Route::middleware('authToken')->post('/addToCart', [CartController::class, 'addItemsToCart']);
 

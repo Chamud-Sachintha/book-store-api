@@ -18,6 +18,12 @@ class ClientSupportMessage extends Model
     ];
 
     public function add_log($messageInfo) {
-        
+        $map['first_name'] = $messageInfo['firstName'];
+        $map['last_name'] = $messageInfo['lastName'];
+        $map['email'] = $messageInfo['email'];
+        $map['message'] = $messageInfo['message'];
+        $map['time'] = $messageInfo['time'];
+
+        return $this->create($map);
     }
 }

@@ -37,7 +37,18 @@ class ClientSupportMessageController extends Controller
             return $this->AppHelper->responseMessageHandle(0, "Message is requirted.");
         } else {
             try {
-                
+                $supportmessage = array();
+                $supportmessage['firstName'] = $first_name;
+                $supportmessage['lastName'] = $last_name;
+                $supportmessage['email'] = $emailAddress;
+                $supportmessage['message'] = $message;
+                $supportmessage['time'] = $this->AppHelper->get_date_and_time();
+
+                $resp = $this->ClientSupportMessage->add_log($supportmessage);
+
+                if ($resp) {
+                    return $this->AppHelper->responseMessageHandle(1, "Operation Complete");
+                }
             } catch (\Exception $e) {
                 return $this->AppHelper->responseMessageHandle(0, $e->getMessage());
             }
