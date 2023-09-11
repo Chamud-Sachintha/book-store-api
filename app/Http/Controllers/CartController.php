@@ -150,7 +150,14 @@ class CartController extends Controller
                 $resp = $this->CartItems->remove_cart_item_by_id($itemInfo);
 
                 if ($resp) {
-                    return $this->AppHelper->responseMessageHandle(1, "Operation Complete");
+                    $checkCartItems = $this->CartItems->check_cart_items($cartId);
+                    if (count($checkCartItems) == 0) {
+                        $removeCart = $this->Cart->remove_cart_by_cartId($cartId);
+
+                        if ($removeCart) {
+                            return $this->AppHelper->responseMessageHandle(1, "Operation Complete");
+                        }
+                    }
                 }
             } catch (\Exception $e) {
                 return $this->AppHelper->responseMessageHandle(0, $e->getMessage());

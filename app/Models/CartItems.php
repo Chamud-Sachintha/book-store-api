@@ -37,4 +37,10 @@ class CartItems extends Model
 
         return $this->where($map)->delete();
     }
+
+    public function check_cart_items($cartId) {
+        $map['cart_id'] = $cartId;
+
+        return $this->where($map)->get();
+    }
 }

@@ -58,9 +58,8 @@ class OrderController extends Controller
                         if ($clientOrderId) {
                             $allCartItems = DB::table('cart_items')->select('cart_items.quantity', 'books.id as bookId', 'books.book_name', 'books.book_cover', 'books.book_category_id', 'books.book_price', 'books.author_name', 'books.rating')
                                     ->join('books', 'cart_items.book_id', '=', 'books.id')
-                                    ->join('carts', 'carts.client_id', '=', 'cart_items.cart_id')
-                                    ->join('users', 'users.id', 'carts.client_id')
-                                    ->where('users.id', '=', $clientId)
+                                    ->join('carts', 'carts.id', '=', 'cart_items.cart_id')
+                                    ->where('carts.client_id', '=', $clientId)
                                     ->get();
 
                             $orderItemsList = array();
@@ -70,7 +69,7 @@ class OrderController extends Controller
                                 $orderItemsList[$key]['quantity'] = $value->quantity;
                                 $orderItemsList[$key]['time'] = $this->Apphelper->get_date_and_time();
                             }
-
+ 
                             $insertRespOrderInfo = $this->OrderItems->place_new_order_items($orderItemsList);
 
                             if ($insertRespOrderInfo) {
@@ -78,7 +77,7 @@ class OrderController extends Controller
                                 $removeCartItems = $this->CartItems->remove_cart_items_by_id($cartId);
 
                                 if ($removeCart && $removeCartItems) {
-                                    return $this->Apphelper->responseMessageHandle(0, "Operation Complete");
+                                    return $this->Apphelper->responseMessageHandle(1, "Operation Complete");
                                 }
                             }
                         }
