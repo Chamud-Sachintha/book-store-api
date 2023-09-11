@@ -96,7 +96,7 @@ class CartController extends Controller
         } else {
             try {
                 $getCartofUser = $this->Cart->verify_cart($clientId);
-
+                
                 if ($getCartofUser) {
                     $resp = DB::table('cart_items')->select('carts.id as cartId', 'cart_items.quantity', 'books.id as bookId', 'books.book_name', 'books.book_cover', 'books.book_category_id', 'books.book_price', 'books.author_name', 'books.rating')
                                 ->join('books', 'cart_items.book_id', '=', 'books.id')
@@ -106,6 +106,7 @@ class CartController extends Controller
                                 ->get();
 
                     $cartItemsList = array();
+                    $totalCartAmount = 0;
                     foreach ($resp as $key => $value) {
                         $cartItemsList['body'][$key]['bookId'] = $value->bookId;
                         $cartItemsList['body'][$key]['bookName'] = $value->book_name;
@@ -113,9 +114,12 @@ class CartController extends Controller
                         $cartItemsList['body'][$key]['rating'] = $value->rating;
                         $cartItemsList['body'][$key]['bookPrice'] = $value->book_price;
                         $cartItemsList['body'][$key]['book_cover'] = $value->book_cover;
+
+                        $totalCartAmount .= $value->book_price;
                     }
 
                     $cartItemsList['cartId'] = $resp[0]->cartId;
+                    $cartItemsList['cartAmount'] = $totalCartAmount;
 
                     return $this->AppHelper->responseEntityHandle(1, "Operating Complete", $cartItemsList);
                 }
