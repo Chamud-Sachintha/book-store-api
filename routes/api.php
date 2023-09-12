@@ -52,3 +52,5 @@ Route::middleware('authToken')->post('/removeItmeFromCart', [CartController::cla
 Route::middleware('authToken')->post('/allCartItems', [CartController::class, 'getAllCartItems']);
 
 Route::middleware('authToken')->post('/placeOrder', [OrderController::class, 'placeNewOrder']);
+
+Route::middleware('authToken')->post('/paidBookList', [ClientContoller::class, 'getClientPaidBooksList']);

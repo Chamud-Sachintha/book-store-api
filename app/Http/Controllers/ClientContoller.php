@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Helpers\AppHelper;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ClientContoller extends Controller
 {
@@ -90,6 +91,37 @@ class ClientContoller extends Controller
                 } else {    
                     return $this->AppHelper->responseMessageHandle(0, "Invalid Email.");
                 }   
+            } catch (\Exception $e) {
+                return $this->AppHelper->responseMessageHandle(0, $e->getMessage());
+            }
+        }
+    }
+
+    public function getClientPaidBooksList(Request $request) {
+
+        $request_token = (is_null($request->token) || empty($request->token)) ? "" : $request->token;
+        $clientId = (is_null($request->cid) || empty($request->cid)) ? "" : $request->cid;
+
+        if ($request_token == "") {
+            return $this->AppHelper->responseMessageHandle(0, "Token is required.");
+        } else if ($clientId == "") {
+            return $this->AppHelper->responseMessageHandle(0, "Client Id is Required.");
+        } else {    
+            try {
+                $resp = DB::table('books')->select('books.id as bookId', 'books.book_name', 'books.book_cover', 'books.author_name')
+                                            ->join('order_items', 'order_items.book_id', '=', 'books.id')
+                                            ->join('orders', 'order_items.order_id', '=', 'orders.id')
+                                            ->where('orders.payment_status', '=', 1)
+                                            ->get();
+
+                $paidBookList = array();
+                foreach ($resp as $key => $value) {
+                    $paidBookList[$key]['bookName'] = $value->book_name;
+                    $paidBookList[$key]['authorName'] = $value->author_name;
+                    $paidBookList[$key]['bookCover'] = $value->book_cover;
+                }
+
+                return $this->AppHelper->responseEntityHandle(1, "Operation Complete", $paidBookList);
             } catch (\Exception $e) {
                 return $this->AppHelper->responseMessageHandle(0, $e->getMessage());
             }
