@@ -116,6 +116,7 @@ class ClientContoller extends Controller
 
                 $paidBookList = array();
                 foreach ($resp as $key => $value) {
+                    $paidBookList[$key]['bookId'] = $value->bookId;
                     $paidBookList[$key]['bookName'] = $value->book_name;
                     $paidBookList[$key]['authorName'] = $value->author_name;
                     $paidBookList[$key]['bookCover'] = $value->book_cover;
