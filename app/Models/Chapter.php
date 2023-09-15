@@ -14,11 +14,14 @@ class Chapter extends Model
         'chapter',
         'page',
         'status',
-        'time'
+        'time',
+        'pdf_path'
     ];
 
     public function get_chapters_by_book_id($bookInfo) {
         $map['book_id'] = $bookInfo['bookId'];
-        $map['status'] = 1;
+        $map['status'] = $bookInfo['status'];
+
+        return $this->where($map)->get();
     }
 }

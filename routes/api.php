@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\ChapterController;
 use App\Http\Controllers\ClientContoller;
 use App\Http\Controllers\ClientSupportMessageController;
 use App\Http\Controllers\FeedbackController;
@@ -54,3 +55,5 @@ Route::middleware('authToken')->post('/allCartItems', [CartController::class, 'g
 Route::middleware('authToken')->post('/placeOrder', [OrderController::class, 'placeNewOrder']);
 
 Route::middleware('authToken')->post('/paidBookList', [ClientContoller::class, 'getClientPaidBooksList']);
+
+Route::middleware('authToken')->post('/chapters', [ChapterController::class, 'getBookChaptersList']);
