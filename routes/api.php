@@ -57,3 +57,5 @@ Route::middleware('authToken')->post('/placeOrder', [OrderController::class, 'pl
 Route::middleware('authToken')->post('/paidBookList', [ClientContoller::class, 'getClientPaidBooksList']);
 
 Route::middleware('authToken')->post('/chapters', [ChapterController::class, 'getBookChaptersList']);
+
+Route::middleware('authToken')->post('/getChapterById', [ChapterController::class, 'getChapterDetailsById']);
