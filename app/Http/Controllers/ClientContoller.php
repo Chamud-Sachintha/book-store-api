@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\AppHelper;
+use App\Models\OrderItems;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -12,11 +13,13 @@ class ClientContoller extends Controller
 
     private $User;
     private $AppHelper;
+    private $OrderItems;
 
     public function __construct()
     {
         $this->AppHelper = new AppHelper();
         $this->User = new User();    
+        $this->OrderItems = new OrderItems();
     }
 
     public function getProfileInformations(Request $request) {
@@ -123,6 +126,44 @@ class ClientContoller extends Controller
                 }
 
                 return $this->AppHelper->responseEntityHandle(1, "Operation Complete", $paidBookList);
+            } catch (\Exception $e) {
+                return $this->AppHelper->responseMessageHandle(0, $e->getMessage());
+            }
+        }
+    }
+
+    public function verifyPaidBookByIdandUid(request $request) {
+
+        $request_token = (is_null($request->token) || empty($request->token)) ? "" : $request->token;
+        $bookId = (is_null($request->bookId) || empty($request->bookId)) ? "" : $request->bookId;
+        $clientId = (is_null($request->clientId) || empty($request->clientId)) ? "" : $request->clientId;
+
+        if ($request_token == "") {
+            return $this->AppHelper->responseMessageHandle(0, "Token is required.");
+        } else if ($bookId == "") {
+            return $this->AppHelper->responseMessageHandle(0, "Book id is required");
+        } else if ($clientId == "") {
+            return $this->AppHelper->responseMessageHandle(0, "Client id is required.");
+        } else {
+            try {
+                $bookInfo = array();
+                $bookInfo['bookId'] = $bookId;
+                $bookInfo['clientId'] = $clientId;
+
+                $resp = DB::table('order_items')->select('order_items.book_id as bookId')
+                                                ->join('orders', 'order_items.order_id', '=', 'orders.id')
+                                                ->where('orders.client_id', '=', $clientId)
+                                                ->where('order_items.book_id', '=', $bookId)
+                                                ->get();
+
+                $result = array();
+                if (count($resp) > 0) {
+                    $result['buyStatus'] = true;
+                } else {
+                    $result['buyStatus'] = false;
+                }
+
+                return $this->AppHelper->responseEntityHandle(1, "Operation Complete", $result);
             } catch (\Exception $e) {
                 return $this->AppHelper->responseMessageHandle(0, $e->getMessage());
             }
