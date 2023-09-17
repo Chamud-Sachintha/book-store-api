@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class AuthController extends Controller
 {
@@ -100,6 +101,59 @@ class AuthController extends Controller
                 }   
             } else {
                 return $this->AppHelper->responseMessageHandle(0, "Username or Password is Incorrect.");
+            }
+        }
+    }
+
+    public function googleAuthSignin(request $request) {
+
+        $emailAddress = (is_null($request->emailAddress) || empty($request->emailAddress)) ? "" : $request->emailAddress;
+        $firstName = (is_null($request->firstName) || empty($request->firstName)) ? "" : $request->firstName;
+        $lastName = (is_null($request->lastName) || empty($request->lastName)) ? "" : $request->lastName;
+
+        if ($emailAddress == "") {
+            return $this->AppHelper->responseMessageHandle(0, "Email Address is required.");
+        } else if ($firstName == "") {
+            return $this->AppHelper->responseMessageHandle(0, "First name is required.");
+        } else {
+            try {
+                $user = $this->User->check_email($emailAddress);
+
+                if (!empty($user)) {
+                    $token = $this->AppHelper->generateAuthToken($user);
+
+                    $data['id'] = $user['id'];
+                    $data['firstName'] = $user['first_name'];
+                    $data['lastName'] = $user['last_name'];
+                    $data['mobileNumber'] = $user['mobile_number'];
+                    $data['email'] = $user['email'];
+
+                    $authdetails['uid'] = $user['id'];
+                    $authdetails['token'] = $token;
+                    $authdetails['time'] = $this->AppHelper->day_time();
+
+                    $updatedUser = $this->User->update_login_time($authdetails);
+
+                    return $this->AppHelper->responseEntityHandle(1, "Login Successfuly", $data, $token);
+                } else {
+                    $data['firstName'] = $firstName;
+                    $data['lastName'] = $lastName;
+                    $data['mobileNumber'] = 0;
+                    $data['email'] = $emailAddress;
+                    $data['password'] = Str::random(10);
+
+                    try {
+                        $user = $this->User->add_user($data);
+        
+                        if ($user) {
+                            return $this->AppHelper->responseEntityHandle(1, "User Created Successfully.", $user);
+                        }
+                    } catch (\Exception $e) {
+                        return $this->AppHelper->responseMessageHandle(0, 'Error Occured ' . $e->getMessage());
+                    }
+                }
+            } catch (\Exception $e) {
+                return $this->AppHelper->responseMessageHandle(0, $e->getMessage());
             }
         }
     }

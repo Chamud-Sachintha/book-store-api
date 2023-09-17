@@ -94,4 +94,11 @@ class User extends Authenticatable
 
         return $this->where($map)->first();
     }
+
+    public function update_password($passInfo) {
+        $map['email'] = $passInfo['emailAddress'];
+        $map1['password'] = $passInfo['password'];
+
+        return $this->where($map)->update($map1);
+    }
 }

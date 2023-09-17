@@ -9,6 +9,7 @@ use App\Http\Controllers\ChapterController;
 use App\Http\Controllers\ClientContoller;
 use App\Http\Controllers\ClientSupportMessageController;
 use App\Http\Controllers\FeedbackController;
+use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\OrderController;
 
 /*
@@ -29,6 +30,14 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::post('register', [AuthController::class, 'registerNewUser']);
 
 Route::post('login', [AuthController::class, 'loginUser']);
+
+Route::post('googleAuth', [AuthController::class, 'googleAuthSignin']);
+
+Route::post('send-otp', [ForgotPasswordController::class, 'sendOTPCodeForUser']);
+
+Route::post('validate-otp', [ForgotPasswordController::class, 'validateOTPCode']);
+
+Route::post('change-pw', [ForgotPasswordController::class, 'changePasswordForUser']);
 
 Route::middleware('authToken')->post('/book-list', [BookController::class, 'getBookList']);
 
