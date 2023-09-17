@@ -7,6 +7,7 @@ use App\Models\Book;
 use App\Models\ClientReview;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class FeedbackController extends Controller
 {
@@ -57,6 +58,7 @@ class FeedbackController extends Controller
                     $feedbackDetails['bookId'] = $bookId;
                     $feedbackDetails['rating'] = $rating;
                     $feedbackDetails['feedback'] = $feedback;
+                    $feedbackDetails['status'] = 0;
                     $feedbackDetails['time'] = $this->AppHelper->get_date_and_time();
 
                     $resp = $this->Feedback->add_log($feedbackDetails);
@@ -73,6 +75,43 @@ class FeedbackController extends Controller
                         return $this->AppHelper->responseEntityHandle(1, "Operation Complete", $newFeedback);
                     }
                 }
+            } catch (\Exception $e) {
+                return $this->AppHelper->responseMessageHandle(0, $e->getMessage());
+            }
+        }
+    }
+
+    public function getAllUserFeedbacks(Request $request) {
+
+        $request_token = (is_null($request->token) || empty($request->token)) ? "" : $request->token;
+        $bookId = (is_null($request->bookId) || empty($request->bookId)) ? "" : $request->bookId;
+
+        if ($request_token == "") {
+            return $this->AppHelper->responseMessageHandle(0, "Token is required.");
+        } else if ($bookId == "") {
+            return $this->AppHelper->responseMessageHandle(0, "Book id is required.");
+        } else {
+            try {
+                $info = array();
+                $info['bookId'] = $bookId;
+                $info['status'] = 1;
+
+                $resp = DB::table('client_reviews')->select('client_reviews.rating', 'client_reviews.feedback', 'client_reviews.time', 'users.first_name', 'users.last_name')
+                                                    ->join('users', 'users.id', '=', 'client_reviews.client_id')
+                                                    ->where('client_reviews.status', '=', 1)
+                                                    ->where('client_reviews.book_id', '=', $bookId)
+                                                    ->get();
+
+                $feedBackList = array();
+                foreach ($resp as $key => $value) {
+                    $feedBackList[$key]['firstName'] = $value->first_name;
+                    $feedBackList[$key]['lastNamde'] = $value->last_name;
+                    $feedBackList[$key]['rating'] = $value->rating;
+                    $feedBackList[$key]['feedback'] = $value->feedback;
+                    $feedBackList[$key]['time'] = date('Y-m-d H:i:s', $value->time);
+                }
+
+                return $this->AppHelper->responseEntityHandle(1, "Operation Complete", $feedBackList);
             } catch (\Exception $e) {
                 return $this->AppHelper->responseMessageHandle(0, $e->getMessage());
             }

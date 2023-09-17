@@ -11,6 +11,7 @@ use App\Http\Controllers\ClientSupportMessageController;
 use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\ProfileController;
 
 /*
 |--------------------------------------------------------------------------
@@ -70,3 +71,7 @@ Route::middleware('authToken')->post('/chapters', [ChapterController::class, 'ge
 Route::middleware('authToken')->post('/getChapterById', [ChapterController::class, 'getChapterDetailsById']);
 
 Route::middleware('authToken')->post('/verify-paid-book', [ClientContoller::class, 'verifyPaidBookByIdandUid']);
+
+Route::middleware('authToken')->post('/check-profile', [ProfileController::class, 'checkProfileIsFilled']);
+
+Route::middleware('authToken')->post('/feedback-list', [FeedbackController::class, 'getAllUserFeedbacks']);

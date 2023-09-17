@@ -14,6 +14,7 @@ class ClientReview extends Model
         'book_id',
         'rating',
         'feedback',
+        'status',
         'time'
     ];
 
@@ -22,6 +23,7 @@ class ClientReview extends Model
         $map['book_id'] = $feedbackDetails['bookId'];
         $map['rating'] = $feedbackDetails['rating'];
         $map['feedback'] = $feedbackDetails['feedback'];
+        $map['status'] = $feedbackDetails['status'];
         $map['time'] = $feedbackDetails['time'];
 
         return $this->create($map);

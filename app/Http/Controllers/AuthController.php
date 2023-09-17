@@ -26,7 +26,6 @@ class AuthController extends Controller
 
         $firstName = (is_null($request->firstName) || empty($request->firstName)) ? "" : $request->firstName;
         $lastName = (is_null($request->lastName) || empty($request->lastName)) ? "" : $request->lastName;
-        $mobileNumber = (is_null($request->mobileNumber) || empty($request->mobileNumber)) ? "" : $request->mobileNumber;
         $email = (is_null($request->email) || empty($request->email)) ? "" : $request->email;
         $password = (is_null($request->password) || empty($request->password)) ? "" : $request->password;
 
@@ -34,8 +33,6 @@ class AuthController extends Controller
             return $this->AppHelper->responseMessageHandle(0, "Please Enter First Name");
         } else if ($lastName == "") {
             return $this->AppHelper->responseMessageHandle(0, "Please Enter Last Name");
-        } else if ($mobileNumber == "") {
-            return $this->AppHelper->responseMessageHandle(0, "Please Enter Mobile Number");
         } else if ($email == "") {
             return $this->AppHelper->responseMessageHandle(0, "Please Enter Email Address");
         } else if ($password == "") {
@@ -50,7 +47,6 @@ class AuthController extends Controller
 
             $data['firstName'] = $firstName;
             $data['lastName'] = $lastName;
-            $data['mobileNumber'] = $mobileNumber;
             $data['email'] = $email;
             $data['password'] = $password;
 
@@ -84,7 +80,6 @@ class AuthController extends Controller
                     $data['id'] = $user['id'];
                     $data['firstName'] = $user['first_name'];
                     $data['lastName'] = $user['last_name'];
-                    $data['mobileNumber'] = $user['mobile_number'];
                     $data['email'] = $user['email'];
                     
                     $token = $this->AppHelper->generateAuthToken($user);
@@ -125,7 +120,6 @@ class AuthController extends Controller
                     $data['id'] = $user['id'];
                     $data['firstName'] = $user['first_name'];
                     $data['lastName'] = $user['last_name'];
-                    $data['mobileNumber'] = $user['mobile_number'];
                     $data['email'] = $user['email'];
 
                     $authdetails['uid'] = $user['id'];
@@ -138,7 +132,6 @@ class AuthController extends Controller
                 } else {
                     $data['firstName'] = $firstName;
                     $data['lastName'] = $lastName;
-                    $data['mobileNumber'] = 0;
                     $data['email'] = $emailAddress;
                     $data['password'] = Str::random(10);
 

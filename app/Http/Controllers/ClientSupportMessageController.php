@@ -20,17 +20,14 @@ class ClientSupportMessageController extends Controller
     public function createSupportMessage(Request $request) {
 
         $request_token = (is_null($request->token) || empty($request->token)) ? "" : $request->token;
-        $first_name = (is_null($request->firstName) || empty($request->firstName)) ? "" : $request->firstName;
-        $last_name = (is_null($request->lastName) || empty($request->lastName)) ? "" : $request->lastName;
+        $title = (is_null($request->title) || empty($request->title)) ? "" : $request->title;
         $emailAddress = (is_null($request->emailAddress) || empty($request->emailAddress)) ? "" :$request->emailAddress;
         $message = (is_null($request->message) || empty($request->message)) ? "" : $request->message;
 
         if ($request_token == "") {
             return $this->AppHelper->responseMessageHandle(0, "Token is Requyired.");
-        } else if ($first_name == "") {
+        } else if ($title == "") {
             return $this->AppHelper->responseMessageHandle(0, "First Name is Requiered.");
-        } else if ($last_name == "") {
-            return $this->AppHelper->responseMessageHandle(0, "Last name is required.");
         } else if ($emailAddress == "") {   
             return $this->AppHelper->responseMessageHandle(0, "Email Address is required.");
         } else if ($message == "") {    
@@ -38,8 +35,7 @@ class ClientSupportMessageController extends Controller
         } else {
             try {
                 $supportmessage = array();
-                $supportmessage['firstName'] = $first_name;
-                $supportmessage['lastName'] = $last_name;
+                $supportmessage['firstName'] = $title;
                 $supportmessage['email'] = $emailAddress;
                 $supportmessage['message'] = $message;
                 $supportmessage['time'] = $this->AppHelper->get_date_and_time();

@@ -19,6 +19,7 @@ class CreateClientReviewsTable extends Migration
             $table->string('book_id');
             $table->integer('rating');
             $table->string('feedback');
+            $table->integer('status');
             $table->integer('time');
             
             $table->timestamps();

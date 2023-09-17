@@ -25,8 +25,10 @@ class ForgotPassword extends Model
 
     public function update_log($codeInfo) {
         $map['email'] = $codeInfo['emailAddress'];
+        $map1['auth_code'] = $codeInfo['authCode'];
+        $map1['time'] = $codeInfo['time'];
 
-        return $this->where($map)->update($codeInfo);
+        return $this->where($map)->update($map1);
     }
 
     public function query_find($email) {

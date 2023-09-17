@@ -10,16 +10,14 @@ class ClientSupportMessage extends Model
     use HasFactory;
 
     protected $fillable = [
-        'first_name',
-        'last_name',
+        'title',
         'email',
         'message',
         'time'
     ];
 
     public function add_log($messageInfo) {
-        $map['first_name'] = $messageInfo['firstName'];
-        $map['last_name'] = $messageInfo['lastName'];
+        $map['title'] = $messageInfo['title'];
         $map['email'] = $messageInfo['email'];
         $map['message'] = $messageInfo['message'];
         $map['time'] = $messageInfo['time'];
