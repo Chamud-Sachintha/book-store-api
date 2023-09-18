@@ -75,3 +75,7 @@ Route::middleware('authToken')->post('/verify-paid-book', [ClientContoller::clas
 Route::middleware('authToken')->post('/check-profile', [ProfileController::class, 'checkProfileIsFilled']);
 
 Route::middleware('authToken')->post('/feedback-list', [FeedbackController::class, 'getAllUserFeedbacks']);
+
+Route::middleware('authToken')->post('/save-profile-info', [ProfileController::class, 'addProfileDetails']);
+
+Route::middleware('authToken')->post('/get-profile-info', [ProfileController::class, 'getUserProfileInfo']);

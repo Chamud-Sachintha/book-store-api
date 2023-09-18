@@ -21,7 +21,18 @@ class Profile extends Model
         'time'
     ];
 
-    public function add_log() {
+    public function add_log($profileInfo) {
+        $map['user_id'] = $profileInfo['userId'];
+        $map['age'] = $profileInfo['age'];
+        $map['sex'] = $profileInfo['sex'];
+        $map['nic_number'] = $profileInfo['nicNumber'];
+        $map['mobile_number'] = $profileInfo['mobileNumber'];
+        $map['school_name'] = $profileInfo['schoolName'];
+        $map['grade'] = $profileInfo['grade'];
+        $map['district'] = $profileInfo['district'];
+        $map['time'] = $profileInfo['time'];
+
+        return $this->create($map);
 
     }
 
