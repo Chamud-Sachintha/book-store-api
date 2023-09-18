@@ -126,10 +126,11 @@ class AuthController extends Controller
                     $authdetails['token'] = $token;
                     $authdetails['time'] = $this->AppHelper->day_time();
 
-                    $updatedUser = $this->User->update_login_time($authdetails);
+                    $this->User->update_login_time($authdetails);
 
                     return $this->AppHelper->responseEntityHandle(1, "Login Successfuly", $data, $token);
                 } else {
+                    $token = $this->AppHelper->generateAuthToken($user);
                     $data['firstName'] = $firstName;
                     $data['lastName'] = $lastName;
                     $data['email'] = $emailAddress;
@@ -137,6 +138,12 @@ class AuthController extends Controller
 
                     try {
                         $user = $this->User->add_user($data);
+
+                        $authdetails['uid'] = $user['id'];
+                        $authdetails['token'] = $token;
+                        $authdetails['time'] = $this->AppHelper->day_time();
+                        
+                        $this->User->update_login_time($authdetails);
         
                         if ($user) {
                             return $this->AppHelper->responseEntityHandle(1, "User Created Successfully.", $user);
