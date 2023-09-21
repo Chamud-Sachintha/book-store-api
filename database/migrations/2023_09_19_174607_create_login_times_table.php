@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateClientSupportMessagesTable extends Migration
+class CreateLoginTimesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,12 @@ class CreateClientSupportMessagesTable extends Migration
      */
     public function up()
     {
-        Schema::create('client_support_messages', function (Blueprint $table) {
+        Schema::create('login_times', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
-            $table->string('email');
-            $table->string('message');
-            $table->string('time');
-            
+            $table->string('client_id');
+            $table->integer('login_time');
+            $table->integer('logout_time');
+            $table->integer('time_diff');
             $table->timestamps();
         });
     }
@@ -31,6 +30,6 @@ class CreateClientSupportMessagesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('client_support_messages');
+        Schema::dropIfExists('login_times');
     }
 }

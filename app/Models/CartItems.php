@@ -43,4 +43,11 @@ class CartItems extends Model
 
         return $this->where($map)->get();
     }
+
+    public function check_duplicate_item($info) {
+        $map['cart_id'] = $info['cartId'];
+        $map['book_id'] = $info['bookId'];
+
+        return $this->where($map)->first();
+    }
 }

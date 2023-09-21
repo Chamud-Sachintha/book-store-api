@@ -35,7 +35,7 @@ class ClientSupportMessageController extends Controller
         } else {
             try {
                 $supportmessage = array();
-                $supportmessage['firstName'] = $title;
+                $supportmessage['title'] = $title;
                 $supportmessage['email'] = $emailAddress;
                 $supportmessage['message'] = $message;
                 $supportmessage['time'] = $this->AppHelper->get_date_and_time();

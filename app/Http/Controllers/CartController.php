@@ -56,6 +56,17 @@ class CartController extends Controller
                     $clientCartId = $this->createCartForUser($clientId);
 
                     if ($clientCartId) {
+
+                        $info = array();
+                        $info['cartId'] = $clientCartId;
+                        $info['bookId'] = $bookId;
+
+                        $check_item = $this->CartItems->check_duplicate_item($info);
+
+                        if ($check_item) {
+                            return $this->AppHelper->responseMessageHandle(0, "Item Already Added to Cart");
+                        }
+
                         $cartItemsInfo = array();
 
                         $cartItemsInfo['cartId'] = $clientCartId;

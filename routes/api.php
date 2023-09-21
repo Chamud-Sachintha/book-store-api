@@ -10,6 +10,7 @@ use App\Http\Controllers\ClientContoller;
 use App\Http\Controllers\ClientSupportMessageController;
 use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\ForgotPasswordController;
+use App\Http\Controllers\LoginTimeController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProfileController;
 
@@ -79,3 +80,7 @@ Route::middleware('authToken')->post('/feedback-list', [FeedbackController::clas
 Route::middleware('authToken')->post('/save-profile-info', [ProfileController::class, 'addProfileDetails']);
 
 Route::middleware('authToken')->post('/get-profile-info', [ProfileController::class, 'getUserProfileInfo']);
+
+Route::post('/login-time', [LoginTimeController::class, 'addLoginTime']);
+
+Route::post('/update-logout-time', [LoginTimeController::class, 'updateLogOutTime']);
