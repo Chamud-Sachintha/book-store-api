@@ -28,4 +28,13 @@ class OrderItems extends Model
 
         return $this->insert($map);
     }
+
+    public function place_new_order($orderInfo) {
+        $map['order_id'] = $orderInfo['orderId'];
+        $map['book_id'] = $orderInfo['bookId'];
+        $map['quantity'] = $orderInfo['quantity'];
+        $map['time'] = $orderInfo['time'];
+
+        return $this->create($map);
+    }
 }

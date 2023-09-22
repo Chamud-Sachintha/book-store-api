@@ -91,8 +91,43 @@ class OrderController extends Controller
         }
     }
 
-    public function getAllOrdersFromUser() {
-        
+    public function buyBook(Request $request) {
+
+        $request_token = (is_null($request->token) || empty($request->token)) ? "" : $request->token;
+        $clientId = (is_null($request->clientId) || empty($request->clientId)) ? "" : $request->clientId;
+        $bookId = (is_null($request->bookId) || empty($request->bookId)) ? "" : $request->bookId;
+
+        if ($request_token == "") {
+            return $this->Apphelper->responseMessageHandle(0, "Token is required.");
+        } else if ($clientId == "") {
+            return $this->Apphelper->responseMessageHandle(0, "Client id is required.");
+        } else if ($bookId == "") {
+            return $this->Apphelper->responseMessageHandle(0, "Book id is required.");
+        } else {
+            try {
+                $verify_client = $this->User->find_by_id($clientId);
+
+                if (!$verify_client) {
+                    return $this->Apphelper->responseMessageHandle(0, "Invalid Client id.");
+                } else {
+                    $clientOrderId = $this->createOrderForUser($clientId);
+
+                    $bookInfo = array();
+                    $bookInfo['orderId'] = $clientOrderId;
+                    $bookInfo['bookId'] = $bookId;
+                    $bookInfo['quantity'] = 1;
+                    $bookInfo['time'] = $this->Apphelper->get_date_and_time();
+
+                    $insertRespOrderInfo = $this->OrderItems->place_new_order($bookInfo);
+
+                    if ($insertRespOrderInfo) {
+                        return $this->Apphelper->responseEntityHandle(1, "Operation Complete", $insertRespOrderInfo);
+                    }
+                }
+            } catch (\Exception $e) {
+                return $this->Apphelper->responseMessageHandle(0, $e->getMessage());
+            }
+        }
     }
 
     private function createOrderForUser($clientId) {

@@ -65,6 +65,8 @@ Route::middleware('authToken')->post('/allCartItems', [CartController::class, 'g
 
 Route::middleware('authToken')->post('/placeOrder', [OrderController::class, 'placeNewOrder']);
 
+Route::middleware('authToken')->post('/buy-book', [OrderController::class, 'buyBook']);
+
 Route::middleware('authToken')->post('/paidBookList', [ClientContoller::class, 'getClientPaidBooksList']);
 
 Route::middleware('authToken')->post('/chapters', [ChapterController::class, 'getBookChaptersList']);
