@@ -110,6 +110,7 @@ class ClientContoller extends Controller
                                             ->join('order_items', 'order_items.book_id', '=', 'books.id')
                                             ->join('orders', 'order_items.order_id', '=', 'orders.id')
                                             ->where('orders.payment_status', '=', 1)
+                                            ->where('orders.client_id', '=', $clientId)
                                             ->get();
 
                 $paidBookList = array();
