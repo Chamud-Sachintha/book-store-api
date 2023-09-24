@@ -36,8 +36,10 @@ class LoginTimeController extends Controller
 
                 $resp = null;
                 if ($getTimeInfo) {
+                    $timeInfo['loginCount'] = $getTimeInfo['login_count'] + 1;
                     $resp = $this->LoginTime->update_login_time($timeInfo);
                 } else {
+                    $timeInfo['loginCount'] = 1;
                     $resp = $this->LoginTime->add_log($timeInfo);
                 }
 

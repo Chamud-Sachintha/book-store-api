@@ -18,6 +18,7 @@ class CreateLoginTimesTable extends Migration
             $table->string('client_id');
             $table->integer('login_time');
             $table->integer('logout_time');
+            $table->integer('login_count');
             $table->integer('time_diff');
             $table->timestamps();
         });

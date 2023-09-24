@@ -78,6 +78,8 @@ class ProfileController extends Controller
             return $this->AppHelper->responseMessageHandle(0, "District is Required.");
         } else {
             try {
+                $userProfile = $this->Profile->query_find($userId);
+
                 $profileInfo = array();
                 $profileInfo['userId'] = $userId;
                 $profileInfo['age'] = $age;
@@ -89,7 +91,12 @@ class ProfileController extends Controller
                 $profileInfo['district'] = $district;
                 $profileInfo['time'] = $this->AppHelper->get_date_and_time();
 
-                $resp = $this->Profile->add_log($profileInfo);
+                $resp = null;
+                if (empty($userProfile)) {
+                    $resp = $this->Profile->add_log($profileInfo);
+                } else {
+                    $resp = $this->Profile->update_log($profileInfo);
+                }
 
                 $userProfile = array();
                 if ($resp) {

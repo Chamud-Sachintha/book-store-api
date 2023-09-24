@@ -13,6 +13,7 @@ class LoginTime extends Model
         'client_id',
         'login_time',
         'logout_time',
+        'login_count',
         'time_diff'
     ];
 
@@ -20,6 +21,7 @@ class LoginTime extends Model
         $map['client_id'] = $timeInfo['clientId'];
         $map['login_time'] = $timeInfo['loginTime'];
         $map['logout_time'] = 0;
+        $map['login_count'] = $timeInfo['loginCount'];
         $map['time_diff'] = 0;
 
         return $this->create($map);
@@ -33,6 +35,8 @@ class LoginTime extends Model
         return $this->where($map)->update($map1);
     }
 
+
+
     public function get_time_info($clientId) {
         $map['client_id'] = $clientId;
 
@@ -42,6 +46,7 @@ class LoginTime extends Model
     public function update_login_time($timeInfo) {
         $map['client_id'] = $timeInfo['clientId'];
         $map1['login_time'] = $timeInfo['loginTime'];
+        $map1['login_count'] = $timeInfo['loginCount'];
 
         return $this->where($map)->update($map1);
     }

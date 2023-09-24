@@ -36,6 +36,12 @@ class Profile extends Model
 
     }
 
+    public function update_log($profileInfo) {
+        $map1['user_id'] = $profileInfo['clientId'];
+
+        return $this->where($map1)->update($profileInfo);
+    }
+
     public function query_find($clientId) {
         $map['user_id'] = $clientId;
 
