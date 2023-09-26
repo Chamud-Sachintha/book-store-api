@@ -24,4 +24,10 @@ class Chapter extends Model
 
         return $this->where($map)->get();
     }
+
+    public function get_chapter_count($bookId) {
+        $map['book_id'] = $bookId;
+
+        return $this->where($map)->count();
+    }
 }

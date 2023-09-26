@@ -7,6 +7,7 @@ use App\Models\Book;
 use App\Models\BookMark;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class BookController extends Controller
 {
@@ -56,25 +57,29 @@ class BookController extends Controller
 
         $request_token = (is_null($request->token) || empty($request->token)) ? "" : $request->token;
         $bookId = (is_null($request->bookId) || empty($request->bookId)) ? "" : $request->bookId;
-        $resp = $this->Book->query_find($bookId);
 
         if ($request_token == "") {
             return $this->AppHelper->responseMessageHandle(0, "Token is required.");
-        } if ($bookId == "") {
+        } else if ($bookId == "") {
             return $this->AppHelper->responseMessageHandle(0, "Book Id is Required");
-        } if (empty($resp)) {
-            return $this->AppHelper->responseMessageHandle(0, "Invalid Book Id.");
         } else {
             try {
 
+                $resp = DB::table('books')->select('books.book_name', 'books.book_cover', 'books.author_name', 'books.book_description', 'books.book_price'
+                                                    , 'books.book_category_id', 'books.rating', 'categories.category')
+                                                    ->join('categories', 'categories.id', '=', 'books.book_category_id')
+                                                    ->where('books.id', '=', $bookId)
+                                                    ->first();
+
                 $bookDetails = array();
-                $bookDetails['bookName'] = $resp['book_name'];
-                $bookDetails['bookCover'] = $resp['book_cover'];
-                $bookDetails['authorName'] = $resp['author_name'];
-                $bookDetails['bookDescription'] = $resp['book_description'];
-                $bookDetails['bookPrice'] = $resp['book_price'];
-                $bookDetails['categoryId'] = $resp['book_category_id'];
-                $bookDetails['rating'] = $resp['rating'];
+                $bookDetails['bookName'] = $resp->book_name;
+                $bookDetails['bookCover'] = $resp->book_cover;
+                $bookDetails['authorName'] = $resp->author_name;
+                $bookDetails['bookDescription'] = $resp->book_description;
+                $bookDetails['bookPrice'] = $resp->book_price;
+                $bookDetails['categoryId'] = $resp->book_category_id;
+                $bookDetails['categoryName'] = $resp->category;
+                $bookDetails['rating'] = $resp->rating;
 
                 return $this->AppHelper->responseEntityHandle(1, "Operation Successfully.", $bookDetails);
             } catch (\Exception $e) {
@@ -169,8 +174,8 @@ class BookController extends Controller
 
                         $bookMarkList = array();                        
                         foreach($resp as $key => $value) {
-                            $bookMarkList['pageNumber'] = $value['page_number'];
-                            $bookMarkList['pageDescription'] = $value['page_description'];
+                            $bookMarkList['body'][$key]['pageNumber'] = $value['page_number'];
+                            $bookMarkList['body'][$key]['pageDescription'] = $value['page_description'];
                         }
 
                         return $this->AppHelper->responseEntityHandle(1, "Operation Complete", $bookMarkList);
@@ -179,6 +184,24 @@ class BookController extends Controller
                     }
                 }
 
+            } catch (\Exception $e) {
+                return $this->AppHelper->responseMessageHandle(0, $e->getMessage());
+            }
+        }
+    }
+
+    public function getChapterCountOfBook(Request $request) {
+
+        $request_token = (is_null($request->token) || empty($request->token)) ? "" : $request->token;
+        $bookId = (is_null($request->bookId) | empty($request->bookId)) ? "" : $request->bookId;
+
+        if ($request_token == "") {
+            return $this->AppHelper->responseMessageHandle(0, "Token is requred.");
+        } else if ($bookId == "") {
+            return $this->AppHelper->responseMessageHandle(0, "Book id required.");
+        } else {
+            try {
+                
             } catch (\Exception $e) {
                 return $this->AppHelper->responseMessageHandle(0, $e->getMessage());
             }

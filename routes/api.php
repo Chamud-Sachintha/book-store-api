@@ -51,7 +51,7 @@ Route::middleware('authToken')->post('/update-profile', [ClientContoller::class,
 
 Route::middleware('authToken')->post('/add-bookmark', [BookController::class, 'createBookMark']);
 
-Route::middleware('authToken')->get('/bookmark-list', [BookController::class, 'getBookMarkListByUser']);
+Route::middleware('authToken')->post('/bookmark-list', [BookController::class, 'getBookMarkListByUser']);
 
 Route::middleware('authToken')->post('/create-feedback', [FeedbackController::class, 'addNewClientReview']);
 

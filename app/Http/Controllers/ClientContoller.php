@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\AppHelper;
+use App\Models\Book;
+use App\Models\Chapter;
 use App\Models\OrderItems;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -14,12 +16,16 @@ class ClientContoller extends Controller
     private $User;
     private $AppHelper;
     private $OrderItems;
+    private $Book;
+    private $Chapter;
 
     public function __construct()
     {
         $this->AppHelper = new AppHelper();
         $this->User = new User();    
         $this->OrderItems = new OrderItems();
+        $this->Book = new Book();
+        $this->Chapter = new Chapter();
     }
 
     public function getProfileInformations(Request $request) {
@@ -115,7 +121,10 @@ class ClientContoller extends Controller
 
                 $paidBookList = array();
                 foreach ($resp as $key => $value) {
+                    $chapterCount = $this->Chapter->get_chapter_count($value->bookId);
+
                     $paidBookList[$key]['bookId'] = $value->bookId;
+                    $paidBookList[$key]['chapterCount'] = $chapterCount;
                     $paidBookList[$key]['bookName'] = $value->book_name;
                     $paidBookList[$key]['authorName'] = $value->author_name;
                     $paidBookList[$key]['bookCover'] = $value->book_cover;
