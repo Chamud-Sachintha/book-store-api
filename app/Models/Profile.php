@@ -37,14 +37,24 @@ class Profile extends Model
     }
 
     public function update_log($profileInfo) {
-        $map1['user_id'] = $profileInfo['clientId'];
+        $map['nic_number'] = $profileInfo['nicNumber'];
+        $map['school_name'] = $profileInfo['schoolName'];
+        $map['age'] = $profileInfo['age'];
+        $map['sex'] = $profileInfo['sex'];
+        $map['mobile_number'] = $profileInfo['mobileNumber'];
+        $map['grade'] = (int)$profileInfo['grade'];
+        $map['district'] = $profileInfo['district'];
+        $map['time'] = $profileInfo['time'];
+        $map1['user_id'] = $profileInfo['userId'];
 
-        return $this->where($map1)->update($profileInfo);
+        // dd($map);
+
+        return $this->where($map1)->update($map);
     }
 
     public function query_find($clientId) {
         $map['user_id'] = $clientId;
-
+        
         return $this->where($map)->first();
     }
 }
