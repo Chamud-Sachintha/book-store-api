@@ -35,6 +35,8 @@ Route::post('login', [AuthController::class, 'loginUser']);
 
 Route::post('googleAuth', [AuthController::class, 'googleAuthSignin']);
 
+Route::post('facebookAuth', [AuthController::class, 'facebookAuthSignin']);
+
 Route::post('send-otp', [ForgotPasswordController::class, 'sendOTPCodeForUser']);
 
 Route::post('validate-otp', [ForgotPasswordController::class, 'validateOTPCode']);
