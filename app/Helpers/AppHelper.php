@@ -26,6 +26,11 @@ class AppHelper {
         return $data;
     }
 
+    function omit_time($time)
+    {
+        return date("Y.m.d", $time);
+    }
+
     public function generateAuthToken($user) {
         $authCode = "CS Software Engineering" . $user . $this->day_time();
         return Hash::make($authCode);
