@@ -190,6 +190,28 @@ class BookController extends Controller
         }
     }
 
+    public function removeBookmarkById(Request $request) {
+
+        $request_token = (is_null($request->token) || empty($request->token)) ? "" : $request->token;
+        $bookmarkId = (is_null($request->bookmarkId) || empty($request->bookmarkId)) ? "" : $request->bookmarkId;
+
+        if ($request_token == "") {
+            return $this->AppHelper->responseMessageHandle(0, "Token is required.");
+        } else if ($bookmarkId == "") {
+            return $this->AppHelper->responseMessageHandle(0, "Bookmark Id is required.");
+        } else {    
+            try {
+                $bookmark = $this->BookMark->remove_bookmark_by_id($bookmarkId);
+
+                if ($bookmark) {
+                    return $this->AppHelper->responseMessageHandle(1, "Operation Successfully.");
+                }
+            } catch (\Exception $e) {
+                return $this->AppHelper->responseMessageHandle(0, $e->getMessage());
+            }
+        }
+    }
+
     public function getChapterCountOfBook(Request $request) {
 
         $request_token = (is_null($request->token) || empty($request->token)) ? "" : $request->token;

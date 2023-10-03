@@ -33,4 +33,10 @@ class BookMark extends Model
 
         return $this->where($map)->get();
     }
+
+    public function remove_bookmark_by_id($id) {
+        $map['id'] = $id;
+
+        return $this->where($map)->delete();
+    }
 }
