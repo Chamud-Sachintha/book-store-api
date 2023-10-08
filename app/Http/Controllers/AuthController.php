@@ -92,10 +92,10 @@ class AuthController extends Controller
 
                     return $this->AppHelper->responseEntityHandle(1, "Login Successfuly", $data, $token);
                 } else {
-                    return $this->AppHelper->responseMessageHandle(0, "Username or Password is Incorrect.");
+                    return $this->AppHelper->responseMessageHandle(0, "Incorrect Username or Password.");
                 }   
             } else {
-                return $this->AppHelper->responseMessageHandle(0, "Username or Password is Incorrect.");
+                return $this->AppHelper->responseMessageHandle(0, "Incorrect Username or Password.");
             }
         }
     }
