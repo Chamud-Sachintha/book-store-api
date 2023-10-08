@@ -124,7 +124,7 @@ class CartController extends Controller
                         $cartItemsList['body'][$key]['authorName'] = $value->author_name;
                         $cartItemsList['body'][$key]['rating'] = $value->rating;
                         $cartItemsList['body'][$key]['bookPrice'] = $value->book_price;
-                        $cartItemsList['body'][$key]['book_cover'] = $value->book_cover;
+                        $cartItemsList['body'][$key]['bookCover'] = $value->book_cover;
 
                         $totalCartAmount += $value->book_price;
                     }
