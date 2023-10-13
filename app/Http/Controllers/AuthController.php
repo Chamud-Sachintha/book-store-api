@@ -42,7 +42,7 @@ class AuthController extends Controller
             $checkEmail = $this->User->check_email($email);
 
             if ($checkEmail) {
-                return $this->AppHelper->responseMessageHandle(0, "Email Already Exisist");
+                return $this->AppHelper->responseMessageHandle(3, "Email Already Exisist");
             }
 
             $data['firstName'] = $firstName;
