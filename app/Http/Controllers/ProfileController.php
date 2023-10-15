@@ -77,7 +77,7 @@ class ProfileController extends Controller
         } else if($district == "") {
             return $this->AppHelper->responseMessageHandle(0, "District is Required.");
         } else {
-            try {
+            //try {
                 $userProfile = $this->Profile->query_find($userId);
 
                 $profileInfo = array();
@@ -95,12 +95,24 @@ class ProfileController extends Controller
                 if (empty($userProfile)) {
                     $resp = $this->Profile->add_log($profileInfo);
                 } else {
+                    $profile = array();
                     $resp = $this->Profile->update_log($profileInfo);
+
+                    $profile['user_id'] = $profileInfo['userId'];
+                    $profile['age'] = $profileInfo['age'];
+                    $profile['sex'] = $profileInfo['sex'];
+                    $profile['nic_number'] = $profileInfo['nicNumber'];
+                    $profile['mobileNumber'] = $profileInfo['mobileNumber'];
+                    $profile['school_name'] = $profileInfo['schoolName'];
+                    $profile['grade'] = $profileInfo['grade'];
+                    $profile['district'] = $profileInfo['district'];
+
+                    $resp = $profile;
                 }
 
                 $userProfile = array();
                 if ($resp) {
-                    $userProfile['id'] = $resp['id'];
+                    // $userProfile['id'] = $resp['id'];
                     $userProfile['userId'] = $resp['user_id'];
                     $userProfile['age'] = $resp['age'];
                     $userProfile['gender'] = $resp['sex'];
@@ -112,9 +124,9 @@ class ProfileController extends Controller
 
                     return $this->AppHelper->responseEntityHandle(1, "Operation Complete", $userProfile);
                 }
-            } catch (\Exception $e) {
-                return $this->AppHelper->responseMessageHandle(0, $e->getMessage());
-            }
+            // } catch (\Exception $e) {
+            //     return $this->AppHelper->responseMessageHandle(0, $e->getMessage());
+            // }
         }
     }
 

@@ -37,6 +37,7 @@ class Profile extends Model
     }
 
     public function update_log($profileInfo) {
+
         $map['nic_number'] = $profileInfo['nicNumber'];
         $map['school_name'] = $profileInfo['schoolName'];
         $map['age'] = $profileInfo['age'];
@@ -46,8 +47,6 @@ class Profile extends Model
         $map['district'] = $profileInfo['district'];
         $map['time'] = $profileInfo['time'];
         $map1['user_id'] = $profileInfo['userId'];
-
-        // dd($map);
 
         return $this->where($map1)->update($map);
     }
