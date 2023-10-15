@@ -77,7 +77,7 @@ class ProfileController extends Controller
         } else if($district == "") {
             return $this->AppHelper->responseMessageHandle(0, "District is Required.");
         } else {
-            //try {
+            try {
                 $userProfile = $this->Profile->query_find($userId);
 
                 $profileInfo = array();
@@ -124,9 +124,9 @@ class ProfileController extends Controller
 
                     return $this->AppHelper->responseEntityHandle(1, "Operation Complete", $userProfile);
                 }
-            // } catch (\Exception $e) {
-            //     return $this->AppHelper->responseMessageHandle(0, $e->getMessage());
-            // }
+            } catch (\Exception $e) {
+                return $this->AppHelper->responseMessageHandle(0, $e->getMessage());
+            }
         }
     }
 
