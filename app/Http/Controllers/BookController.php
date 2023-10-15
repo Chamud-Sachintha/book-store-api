@@ -177,7 +177,7 @@ class BookController extends Controller
                             $bookMarkList['body'][$key]['bookmarkId'] = $value['id'];
                             $bookMarkList['body'][$key]['pageNumber'] = $value['page_number'];
                             $bookMarkList['body'][$key]['pageDescription'] = $value['page_description'];
-                            $bookMarkList['body'][$key]['createdDate'] = $this->AppHelper->omit_time($value['time']);
+                            $bookMarkList['body'][$key]['createdDate'] = $value['time'];
                         }
 
                         return $this->AppHelper->responseEntityHandle(1, "Operation Complete", $bookMarkList);

@@ -31,7 +31,7 @@ class BookMark extends Model
         $map['client_id'] = $bookMarkDetails['clientId'];
         $map['book_id'] = $bookMarkDetails['bookId'];
 
-        return $this->where($map)->get();
+        return $this->where($map)->orderBy('time' ,'DESC')->get();
     }
 
     public function remove_bookmark_by_id($id) {
