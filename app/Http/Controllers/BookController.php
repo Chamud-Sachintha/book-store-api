@@ -170,14 +170,23 @@ class BookController extends Controller
 
                     $resp = $this->BookMark->query_log($bookMarkDetails);
 
-                    if ($resp) {
+                    $resp2 = DB::table('book_marks')->select('book_marks.id as bookmarkId', 'book_marks.page_number', 'book_marks.page_description', 'book_marks.time', 'chapters.chapter as chapterName')
+                                                    ->join('chapters', 'chapters.id', '=', 'book_marks.page_number')
+                                                    ->where('book_marks.client_id', '=', $client_id)
+                                                    ->where('book_marks.book_id', '=', $book_id)
+                                                    ->orderBy('time', 'DESC')
+                                                    ->get();
+                    
+                    if ($resp2) {
 
                         $bookMarkList = array();                        
-                        foreach($resp as $key => $value) {
-                            $bookMarkList['body'][$key]['bookmarkId'] = $value['id'];
-                            $bookMarkList['body'][$key]['pageNumber'] = $value['page_number'];
-                            $bookMarkList['body'][$key]['pageDescription'] = $value['page_description'];
-                            $bookMarkList['body'][$key]['createdDate'] = $value['time'];
+                        foreach($resp2 as $key => $value) {
+                            $data = json_encode($value);
+                            $bookMarkList['body'][$key]['bookmarkId'] = $value->bookmarkId;
+                            $bookMarkList['body'][$key]['chapterName'] = $value->chapterName;
+                            $bookMarkList['body'][$key]['pageNumber'] = $value->page_number;
+                            $bookMarkList['body'][$key]['pageDescription'] = $value->page_description;
+                            $bookMarkList['body'][$key]['createdDate'] = $value->time;
                         }
 
                         return $this->AppHelper->responseEntityHandle(1, "Operation Complete", $bookMarkList);
