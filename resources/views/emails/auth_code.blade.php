@@ -15,17 +15,19 @@
                 <a href="" style="font-size:1.4em;color: #00466a;text-decoration:none;font-weight:600">Your Brand</a>
             </div>
             <p style="font-size:1.1em">Hi,</p>
-            <p>Thank you for choosing Your Brand. Use the following OTP to complete your Sign Up procedures.</p>
+            <p>We received a request to reset your dpuremaths password. Please use the One-Time Password (OTP) below to continue the process.</p>
+            <h3>Your OTP :</h3>
             <h2
                 style="background: #00466a;margin: 0 auto;width: max-content;padding: 0 10px;color: #fff;border-radius: 4px;">
                 {{ $details['body'] }}</h2>
-            <p style="font-size:0.9em;">Regards,<br />Your Brand</p>
+            <p>If you didn’t request a password reset, please disregard this email. Thank you for choosing dpuremaths.</p>
+            <p style="font-size:0.9em;">Best regards,<br />DPuremaths Team</p>
             <hr style="border:none;border-top:1px solid #eee" />
-            <div style="float:right;padding:8px 0;color:#aaa;font-size:0.8em;line-height:1;font-weight:300">
+            {{-- <div style="float:right;padding:8px 0;color:#aaa;font-size:0.8em;line-height:1;font-weight:300">
                 <p>Your Brand Inc</p>
                 <p>1600 Amphitheatre Parkway</p>
                 <p>California</p>
-            </div>
+            </div> --}}
         </div>
     </div>
 </body>
