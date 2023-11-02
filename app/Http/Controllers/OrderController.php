@@ -107,6 +107,16 @@ class OrderController extends Controller
             try {
                 $verify_client = $this->User->find_by_id($clientId);
 
+                $checkCart = DB::table('cart_items')->select('cart_items.id')
+                                                    ->join('carts', 'carts.id', '=', 'cart_items.cart_id')
+                                                    ->where('carts.client_id', '=', $clientId)
+                                                    ->where('cart_items.book_id', '=', $bookId)
+                                                    ->get();
+
+                if (count($checkCart) >= 1) {
+                    return $this->Apphelper->responseMessageHandle(3, "Item Already Added to Cart");
+                }
+
                 if (!$verify_client) {
                     return $this->Apphelper->responseMessageHandle(0, "Invalid Client id.");
                 } else {
