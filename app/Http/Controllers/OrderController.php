@@ -114,7 +114,7 @@ class OrderController extends Controller
                                                     ->get();
 
                 if (count($checkCart) >= 1) {
-                    return $this->Apphelper->responseMessageHandle(3, "Item Already Added to Cart");
+                    return $this->Apphelper->responseMessageHandle(3, "Book Already Added to Cart");
                 }
 
                 if (!$verify_client) {
