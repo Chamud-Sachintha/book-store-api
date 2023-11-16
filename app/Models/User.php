@@ -59,9 +59,9 @@ class User extends Authenticatable
     public function delete_user_by_username($info) {
         $map['email'] = $info['userName'];
         $map1['status'] = 0;
-        $map['remark'] = $info['remark'];
+        $map1['remark'] = $info['remark'];
 
-        $this->where($map)->update($map1);
+        return $this->where($map)->update($map1);
     }
 
     public function check_email($email) {

@@ -184,13 +184,13 @@ class ProfileController extends Controller
             try {
 
                 $user = $this->User->check_email($userName);
-
-                if ($user && Hash::check($password, $user->pasword)) {
+                
+                if ($user && !Hash::check($password, $user->pasword)) {
                     $userInfo = array();
                     $userInfo['userName'] = $userName;
                     $userInfo['remark'] = $remark;
 
-                    $resp = $this->delete_user_by_username($userInfo);
+                    $resp = $this->User->delete_user_by_username($userInfo);
 
                     if ($resp) {
                         return $this->AppHelper->responseMessageHandle(1, "Operation Complete");
