@@ -24,6 +24,8 @@ class User extends Authenticatable
         'last_name',
         'email',
         'password',
+        'status',
+        'remark'
     ];
 
     /**
@@ -54,12 +56,34 @@ class User extends Authenticatable
         return $this->create($userDetails);
     }
 
+    public function delete_user_by_username($info) {
+        $map['email'] = $info['userName'];
+        $map1['status'] = 0;
+        $map['remark'] = $info['remark'];
+
+        $this->where($map)->update($map1);
+    }
+
     public function check_email($email) {
         $map['email'] = $email;
         
         return $this->where($map)->first();
     }
 
+    public function check_user_status($userInfo) {
+        $map['email'] = $userInfo['userEmail'];
+        $map['status'] = 1;
+
+        return $this->where($map)->first();
+    }
+
+    public function check_user_by_email_password($info) {
+        $map['email'] = $info['userName'];
+        $map['password'] = $info['password'];
+
+        return $this->where($map)->first();
+    }
+ 
     public function update_login_time($authDetails) {
         $uid['id'] = $authDetails['uid'];
         $map['token'] = $authDetails['token'];

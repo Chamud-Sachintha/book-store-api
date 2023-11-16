@@ -4,17 +4,20 @@ namespace App\Http\Controllers;
 
 use App\Helpers\AppHelper;
 use App\Models\Profile;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class ProfileController extends Controller
 {
     private $AppHelper;
     private $Profile;
+    private $User;
 
     public function __construct()
     {
         $this->AppHelper = new AppHelper();
         $this->Profile = new Profile();
+        $this->User = new User();
     }
 
     public function checkProfileIsFilled(Request $request) {
@@ -156,6 +159,51 @@ class ProfileController extends Controller
                     $userProfile['district'] = $resp['district'];
 
                     return $this->AppHelper->responseEntityHandle(1, "Operation Complete", $userProfile);
+                }
+            } catch (\Exception $e) {
+                return $this->AppHelper->responseMessageHandle(0, $e->getMessage());
+            }
+        }
+    }
+
+    public function deleteUserProfile(Request $request) {
+
+        $request_token = (is_null($request->token) || empty($request->token)) ? "" : $request->token;
+        $flag = (is_null($request->flag) || empty($request->flag)) ? "" : $request->flag;
+        $userName = (is_null($request->userName) || empty($request->userName)) ? "" : $request->userName;
+        $remark = (is_null($request->remark) || empty($request->remark)) ? "" : $request->remark;
+        $password = (is_null($request->password) || empty($request->password)) ? "" : $request->password;
+
+        if ($request_token == "") {
+            return $this->AppHelper->responseMessageHandle(0, "Token is required.");
+        } else if ($flag == "") {
+            return $this->AppHelper->responseMessageHandle(0, "Flag is required.");
+        } else if ($password == "") {
+            return $this->AppHelper->responseMessageHandle(0, "Passwrod is required.");
+        } else {
+
+            try {
+
+                $credentials = array();
+                $credentials['userName'] = $userName;
+                $credentials['password'] = $password;
+
+                $user = $this->User->check_user_by_email_password($credentials);
+
+                if ($user) {
+                    $userInfo = array();
+                    $userInfo['userName'] = $userName;
+                    $userInfo['remark'] = $remark;
+
+                    $resp = $this->delete_user_by_username($userInfo);
+
+                    if ($resp) {
+                        return $this->AppHelper->responseMessageHandle(1, "Operation Complete");
+                    } else {
+                        return $this->AppHelper->responseMessageHandle(0, "Error Occured.");
+                    }
+                } else {
+                    return $this->AppHelper->responseMessageHandle(0, "Invalid Password.");
                 }
             } catch (\Exception $e) {
                 return $this->AppHelper->responseMessageHandle(0, $e->getMessage());

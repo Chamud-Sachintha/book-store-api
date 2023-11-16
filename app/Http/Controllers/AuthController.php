@@ -73,6 +73,15 @@ class AuthController extends Controller
             return $this->AppHelper->responseMessageHandle(0, "Password is required.");
         } else {
 
+            $userInfo = array();
+            $userInfo['userEmail'] = $userName;
+
+            $userStatus = $this->User->check_user_status($userInfo);
+
+            if ($userStatus) {
+                return $this->AppHelper->responseMessageHandle(0, "Your Account is Deleted.");
+            }
+
             $user = $this->User->check_email($userName);
 
             if (!empty($user)) {

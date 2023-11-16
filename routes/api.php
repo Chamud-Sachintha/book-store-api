@@ -87,6 +87,8 @@ Route::middleware('authToken')->post('/save-profile-info', [ProfileController::c
 
 Route::middleware('authToken')->post('/get-profile-info', [ProfileController::class, 'getUserProfileInfo']);
 
+Route::middleware('authToken')->post('delete-user-profile', [ProfileController::class, 'deleteUserProfile']);
+
 Route::post('/login-time', [LoginTimeController::class, 'addLoginTime']);
 
 Route::post('/update-logout-time', [LoginTimeController::class, 'updateLogOutTime']);
