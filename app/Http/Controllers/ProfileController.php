@@ -168,15 +168,13 @@ class ProfileController extends Controller
 
     public function deleteUserProfile(Request $request) {
 
-        $request_token = (is_null($request->token) || empty($request->token)) ? "" : $request->token;
-        $flag = (is_null($request->flag) || empty($request->flag)) ? "" : $request->flag;
+        // $request_token = (is_null($request->token) || empty($request->token)) ? "" : $request->token;
+        // $flag = (is_null($request->flag) || empty($request->flag)) ? "" : $request->flag;
         $userName = (is_null($request->userName) || empty($request->userName)) ? "" : $request->userName;
         $remark = (is_null($request->remark) || empty($request->remark)) ? "" : $request->remark;
         $password = (is_null($request->password) || empty($request->password)) ? "" : $request->password;
 
-        if ($request_token == "") {
-            return $this->AppHelper->responseMessageHandle(0, "Token is required.");
-        } else if ($flag == "") {
+        if ($userName == "") {
             return $this->AppHelper->responseMessageHandle(0, "Flag is required.");
         } else if ($password == "") {
             return $this->AppHelper->responseMessageHandle(0, "Passwrod is required.");
