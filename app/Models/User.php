@@ -72,7 +72,7 @@ class User extends Authenticatable
 
     public function check_user_status($userInfo) {
         $map['email'] = $userInfo['userEmail'];
-        $map['status'] = 1;
+        $map['status'] = 0;
 
         return $this->where($map)->first();
     }
