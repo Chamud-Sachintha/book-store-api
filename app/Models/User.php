@@ -76,13 +76,6 @@ class User extends Authenticatable
 
         return $this->where($map)->first();
     }
-
-    public function check_user_by_email_password($info) {
-        $map['email'] = $info['userName'];
-        $map['password'] = $info['password'];
-
-        return $this->where($map)->first();
-    }
  
     public function update_login_time($authDetails) {
         $uid['id'] = $authDetails['uid'];

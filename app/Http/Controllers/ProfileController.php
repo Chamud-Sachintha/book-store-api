@@ -6,6 +6,7 @@ use App\Helpers\AppHelper;
 use App\Models\Profile;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class ProfileController extends Controller
 {
@@ -182,13 +183,9 @@ class ProfileController extends Controller
 
             try {
 
-                $credentials = array();
-                $credentials['userName'] = $userName;
-                $credentials['password'] = $password;
+                $user = $this->User->check_email($userName);
 
-                $user = $this->User->check_user_by_email_password($credentials);
-
-                if ($user) {
+                if ($user && Hash::check($password, $user->pasword)) {
                     $userInfo = array();
                     $userInfo['userName'] = $userName;
                     $userInfo['remark'] = $remark;
